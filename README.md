@@ -82,6 +82,8 @@ Mentora/
 └── README.md
 ```
 
+> **Note:** if you extracted a zip, your top-level folder may be auto-named something like `ai-teacher-fixed (1)` instead of `Mentora`. It's the same project — just `cd` into whatever folder actually contains `backend/` and `frontend/`. Renaming it to something simple (e.g. `Mentora`) is recommended, especially on Windows — see Troubleshooting below.
+
 ## Getting Started
 
 ### Prerequisites
@@ -143,6 +145,8 @@ python3 -m http.server 5500
 ```
 
 If the frontend runs on a different origin/port than the ones listed in `CORS_ORIGINS`, either add it to `backend/.env`, or set `window.API_BASE = "http://localhost:8000"` near the top of `frontend/app.js` if the backend runs elsewhere.
+
+Once both servers are running, open your browser and go to **http://localhost:5500** — that's the app. It talks to the backend on port 8000 behind the scenes; you don't open port 8000 directly.
 
 ## Environment Variables
 
@@ -214,6 +218,33 @@ _No screenshots have been added yet — placeholders below for you to fill in._
 ### Report Screen
 ![Mentora Report](screenshots/report.png)
 ```
+
+## Troubleshooting
+
+**`Set-Location : A positional parameter cannot be found` or `Cannot find path` in PowerShell**
+Your folder name has a space or parentheses in it (e.g. `Mentora Final`, `ai-teacher-fixed (1)`). PowerShell needs quotes around any path with spaces or special characters:
+```powershell
+cd "ai-teacher-fixed (1)"
+```
+To avoid this entirely, rename the extracted folder to something simple like `Mentora`:
+```powershell
+Rename-Item "ai-teacher-fixed (1)" "Mentora"
+```
+
+**Not sure which folder you're in / what's inside it**
+Run `dir` (PowerShell/CMD) or `ls` (macOS/Linux/Git Bash) to list the contents of your current folder before running `cd`.
+
+**Nothing loads at `http://localhost:5500`**
+- Confirm the frontend terminal is still running `python -m http.server 5500` and that you started it *from inside* the `frontend` folder — if you're in the wrong folder you'll get a generic directory listing instead of the app.
+- Try `http://127.0.0.1:5500` instead of `localhost` if the browser can't resolve it.
+
+**The page loads but lessons won't start / API calls fail**
+- Check the backend terminal for errors. The most common cause is a missing or invalid `GROQ_API_KEY` in `backend/.env`.
+- Make sure the backend terminal is still open and shows `Uvicorn running on http://127.0.0.1:8000` with no crash.
+- If you changed the backend port or the frontend port, update `CORS_ORIGINS` in `backend/.env` (or `window.API_BASE` in `frontend/app.js`) to match.
+
+**`address already in use` when starting a server**
+Another process is already using port 8000 or 5500. Either stop that process, or start on a different port: `uvicorn main:app --reload --port 8001` and `python -m http.server 5501` (updating `CORS_ORIGINS`/`API_BASE` accordingly).
 
 ## Future Improvements
 

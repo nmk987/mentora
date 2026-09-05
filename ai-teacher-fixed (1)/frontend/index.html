@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentora — Your adaptive study space</title>
+<link rel="stylesheet" href="style.css?v=20260904-4">
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="brand-mark" aria-label="Mentora cat mascot" role="img"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></div>
+    <div class="brand-copy">
+      <div class="chalk-title">Mentora</div>
+      <div class="chalk-sub">your calm corner for making ideas click</div>
+    </div>
+    <div class="study-status"><span></span> Study space</div>
+    <nav class="top-nav">
+      <button class="nav-link active" id="navHome">⌂ <span>Home</span></button>
+      <button class="nav-link" id="navProgress">◔ <span>Progress</span></button>
+      <button class="nav-link" id="navStudyPlan">◉ <span>Study plan</span></button>
+      <button class="nav-link" id="navSets">▦ <span>Study sets</span></button>
+      <button class="nav-link" id="navTutor">✦ <span>Tutor</span></button>
+      <button class="nav-link" id="navCalendar">□ <span>Calendar</span></button>
+      <button class="nav-link" id="navMiniApps">▤ <span>Mini apps</span></button>
+    </nav>
+    <button class="nav-link theme-toggle" id="themeToggle" title="Toggle dark mode"><span class="theme-toggle-icon">☾</span><span>Dark mode</span></button>
+    <div class="rail-footer"><span class="rail-avatar">M</span><div><strong id="workspaceUserName">My workspace</strong><small>Local student profile</small></div><button class="sign-out-btn" id="signOutBtn" title="Sign out" aria-label="Sign out">↪</button></div>
+  </div>
+
+  <section id="screen-sign-in" class="screen active">
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="auth-brand-mark"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></div>
+        <span class="section-kicker">Welcome to Mentora</span>
+        <h1>Pick up where your curiosity left off.</h1>
+        <p class="auth-lede">Sign in to keep your study plans, tutor sessions, and progress together in one calm workspace.</p>
+        <form id="signInForm" class="auth-form">
+          <label>Email<input id="signInEmail" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+          <label>Password<input id="signInPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required></label>
+          <button class="btn btn-primary auth-submit" type="submit">Sign in →</button>
+        </form>
+        <button class="auth-demo-btn" id="demoSignInBtn" type="button">Continue with demo account</button>
+        <p class="auth-hint">Demo account: <strong>student@mentora.local</strong> / <strong>demo123</strong></p>
+        <div id="signInError" class="auth-error" role="alert"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <section id="screen-dashboard" class="screen active">
+    <div class="paper">
+      <div class="dashboard-heading">
+        <div>
+          <span class="eyebrow">Your study dashboard</span>
+          <h1>What are we learning today?</h1>
+          <p class="lede">Bring a question, a set of notes, or just a little curiosity. Your tutor will shape the session around you.</p>
+        </div>
+        <div class="streak-card"><span class="streak-icon">☼</span><div><strong>Keep your rhythm</strong><small>Small sessions add up.</small></div></div>
+      </div>
+
+      <div class="dashboard-quickbar">
+        <button class="quick-tab selected"><span class="quick-play">▶</span> Continue studying</button>
+        <button class="quick-tab" data-toast="Your study sets will be listed here">▦ My study sets</button>
+        <button class="quick-action" id="quickCreateBtn">＋ Create study set</button>
+      </div>
+
+      <div class="dashboard-glance" aria-label="Study features">
+        <div class="glance-item"><span class="glance-icon warm">✦</span><div><strong>Adaptive lessons</strong><small>Explains, checks, adapts</small></div></div>
+        <div class="glance-item"><span class="glance-icon mint">↗</span><div><strong>Smart progress</strong><small>See what is sticking</small></div></div>
+        <div class="glance-item"><span class="glance-icon peach">◌</span><div><strong>Made from your notes</strong><small>Upload once, learn better</small></div></div>
+      </div>
+
+      <div class="dashboard-workspace">
+        <div class="workspace-heading"><div><span class="section-kicker">Your workspace</span><h2>Pick up where you left off</h2></div><span class="workspace-caption">Everything you study, in one gentle rhythm.</span></div>
+        <div id="studySetGrid" class="study-set-grid">
+          <button class="study-set-card create-set-card" id="createSetBtn"><span class="set-card-icon">＋</span><strong>Create a new study set</strong><small>Upload notes, slides, or a topic</small></button>
+          <button class="study-set-card resume-card" id="resumeSetBtn" style="display:none"><span class="set-card-icon">↗</span><strong id="resumeSetTitle">Resume your last session</strong><small id="resumeSetMeta">Your next idea is waiting</small></button>
+          <div id="emptySetCard" class="study-set-card empty-set-card"><span class="set-card-icon soft">⌁</span><strong>Your study sets will live here</strong><small>Start with a topic or upload your first material below.</small></div>
+        </div>
+      </div>
+
+      <div class="dashboard-actions">
+        <div><span class="section-kicker">Start a focused session</span><p>Choose your material and we will take it from there.</p></div>
+        <button class="btn btn-demo" id="demoModeBtn">✦ Try a guided demo</button>
+      </div>
+
+      <div class="dash-section">
+        <p class="dash-section-title">Topic &amp; material</p>
+        <div class="field-grid">
+          <div class="field full">
+            <label for="topic">Topic</label>
+            <input type="text" id="topic" placeholder="e.g. Ohm's Law, Photosynthesis, Recursion">
+          </div>
+
+          <div class="field full">
+            <label>Or upload material (PDF / DOCX / PPTX)</label>
+            <label class="upload-box" id="uploadBox">
+              <input type="file" id="fileInput" accept=".pdf,.docx,.pptx">
+              <span id="uploadLabel">📎 Drop your notes here — the lesson will be grounded in them</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-section">
+        <p class="dash-section-title">Level, language &amp; time</p>
+        <div class="field-grid">
+          <div class="field full">
+            <label>Level</label>
+            <div class="pill-group" data-group="level">
+              <button class="pill selected" data-value="Beginner">Beginner</button>
+              <button class="pill" data-value="Intermediate">Intermediate</button>
+              <button class="pill" data-value="Advanced">Advanced</button>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Language</label>
+            <div class="pill-group" data-group="language">
+              <button class="pill selected" data-value="English">English</button>
+              <button class="pill" data-value="Hindi">Hindi</button>
+              <button class="pill" data-value="Hinglish">Hinglish</button>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Time available</label>
+            <div class="pill-group" data-group="time">
+              <button class="pill" data-value="5">5 min</button>
+              <button class="pill selected" data-value="20">20 min</button>
+              <button class="pill" data-value="60">60 min</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-section">
+        <p class="dash-section-title">Teaching style</p>
+        <div class="field-grid">
+          <div class="field full">
+            <label>Teacher personality</label>
+            <div class="pill-group" data-group="personality">
+              <button class="pill selected" data-value="Friendly">Friendly</button>
+              <button class="pill" data-value="Strict exam teacher">Strict exam</button>
+              <button class="pill" data-value="Storyteller">Storyteller</button>
+              <button class="pill" data-value="Socratic teacher">Socratic</button>
+              <button class="pill" data-value="Technical mentor">Technical mentor</button>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Teaching strategy</label>
+            <div class="pill-group" data-group="strategy">
+              <button class="pill selected" data-value="Standard">Standard</button>
+              <button class="pill" data-value="Socratic">Socratic</button>
+              <button class="pill" data-value="Exam-focused">Exam-focused</button>
+              <button class="pill" data-value="Example-first">Example-first</button>
+            </div>
+            <p class="field-note">Personality is <em>how</em> the teacher talks; strategy is <em>how</em> it structures the lesson — they combine freely, e.g. Friendly + Socratic.</p>
+          </div>
+
+          <div class="field full">
+            <label>Session mode</label>
+            <div class="pill-group" data-group="mode">
+              <button class="pill selected" data-value="Learn">Learn</button>
+              <button class="pill" data-value="Practice">Practice</button>
+              <button class="pill" data-value="Revision">Revision</button>
+              <button class="pill" data-value="Exam">Exam prep</button>
+            </div>
+            <p class="field-note">Revision mode automatically pulls in concepts you struggled with last time on this topic (falls back to Learn if there's no history yet).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="field full" id="recallBanner" style="display:none">
+      </div>
+
+      <div class="field full" id="reviewSection" style="display:none">
+        <p class="dash-section-title">📚 Due for review</p>
+        <div id="reviewList" class="review-list"></div>
+      </div>
+
+      <div class="dash-section">
+        <div class="field full">
+          <label for="goal">Learning goal (optional)</label>
+          <textarea id="goal" placeholder="e.g. I want to pass tomorrow's quiz on circuits"></textarea>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <button class="btn btn-primary" id="startBtn">Start lesson →</button>
+      </div>
+      <div class="error-note" id="dashError"></div>
+    </div>
+  </section>
+
+  <!-- ============ LESSON ============ -->
+  <section id="screen-lesson" class="screen">
+    <div class="classroom-grid">
+
+      <!-- LEFT: teacher avatar -->
+      <div class="board-panel">
+        <button class="btn btn-ghost lesson-home-btn" id="lessonHomeBtn" title="Return to dashboard">⌂ Home</button>
+        <div class="teacher-stage">
+          <div class="avatar-wrap">
+            <div class="avatar-glow" id="avatarGlow"></div>
+            <div class="avatar-ring" id="avatarRing"></div>
+            <svg class="avatar-face" viewBox="0 0 200 200" id="avatarFace">
+              <circle cx="100" cy="100" r="86" fill="none" stroke="#F4F1E8" stroke-width="3" stroke-dasharray="4 7" opacity="0.6"/>
+              <circle cx="70" cy="88" r="7" fill="#F4F1E8"/>
+              <circle cx="130" cy="88" r="7" fill="#F4F1E8"/>
+              <path id="browLeft" d="M55 60 Q70 48 85 58" stroke="#F4F1E8" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path id="browRight" d="M115 58 Q130 48 145 60" stroke="#F4F1E8" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <rect class="mouth" id="mouth" x="75" y="125" width="50" height="8" rx="4" fill="#F4F1E8"/>
+            </svg>
+          </div>
+          <div class="teacher-status-chip" id="voiceStatus"></div>
+        </div>
+        <div class="timer" id="timerLabel">0:00 elapsed</div>
+        <label class="lang-toggle">
+          <input type="checkbox" id="voiceToggle" checked>
+          🔊 Read aloud
+        </label>
+        <div class="field" style="width:100%">
+          <label for="langSwitch" style="color:var(--chalk-dim)">Teaching language</label>
+          <select id="langSwitch" class="lang-select">
+            <option value="English">English</option>
+            <option value="Hindi">Hindi</option>
+            <option value="Hinglish">Hinglish</option>
+          </select>
+        </div>
+        <div class="field" style="width:100%">
+          <label for="personalitySwitch" style="color:var(--chalk-dim)">Personality</label>
+          <select id="personalitySwitch" class="lang-select">
+            <option value="Friendly">😊 Friendly</option>
+            <option value="Strict exam teacher">📏 Strict exam</option>
+            <option value="Storyteller">📖 Storyteller</option>
+            <option value="Socratic teacher">❓ Socratic</option>
+            <option value="Technical mentor">🛠️ Technical mentor</option>
+          </select>
+        </div>
+        <div class="lesson-player" aria-label="Lesson playback controls">
+          <button class="player-btn player-toggle" id="pauseSceneBtn" title="Pause narration" aria-label="Pause narration">Ⅱ</button>
+          <button class="player-btn" id="rewindSceneBtn" title="Previous scene" aria-label="Previous scene">⏮</button>
+          <button class="player-btn" id="forwardSceneBtn" title="Next scene" aria-label="Next scene">⏭</button>
+          <button class="player-btn" id="restartSceneBtn" title="Restart lesson" aria-label="Restart lesson">↻</button>
+          <button class="player-btn" id="muteSceneBtn" title="Mute narration" aria-label="Mute narration">🔊</button>
+          <div class="player-timeline"><div class="player-track"><span id="playerTrackFill"></span></div><span id="playerTimeLabel">0:00</span></div>
+          <button class="player-speed" id="playSpeedBtn" title="Change playback speed">1×</button>
+        </div>
+        <button class="btn btn-ghost" id="skipSceneBtn" style="width:100%;font-size:12px;padding:8px">Skip to question</button>
+        <button class="btn btn-ghost" id="splitStudyBtn" style="width:100%;font-size:12px;padding:8px">Open split study</button>
+        <button class="btn btn-ghost" id="openFlashcardsBtn" style="width:100%;font-size:12px;padding:8px">🗂 Flashcards</button>
+      </div>
+
+      <!-- CENTER: explanation + visual -->
+      <div class="slide-panel" id="slidePanel">
+        <div class="loading-line" id="lessonLoading"><div class="spinner"></div> Setting up your lesson…</div>
+
+        <div id="lessonContent" style="display:none">
+          <span class="reteach-badge" id="reteachBadge" style="display:none">Let's try that again</span>
+          <span class="grounding-badge" id="groundingBadge" style="display:none"></span>
+          <h2 class="slide-title" id="slideTitle"></h2>
+          <div class="teacher-bubble">
+            <p class="narration" id="narrationText"></p>
+          </div>
+          <div class="chalk-box">
+            <ul id="bulletList"></ul>
+          </div>
+          <p class="example-line" id="exampleText"></p>
+          <div id="visualContainer" class="visual-container"></div>
+          <div class="checkin-row" id="checkinRow" style="display:none">
+            <span class="checkin-dot"></span>
+            <span id="checkinText"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: progress + knowledge map -->
+      <div class="knowledge-panel">
+        <div>
+          <div class="meta-label">Lesson progress</div>
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="lessonProgressFill" style="width:0%"></div></div>
+          <div class="progress-bar-label" id="lessonProgressLabel">0%</div>
+        </div>
+        <div>
+          <div class="meta-label">Concept</div>
+          <div class="concept-dots" id="conceptDots"></div>
+        </div>
+        <div>
+          <div class="meta-label">Difficulty</div>
+          <div class="difficulty-meter" id="diffMeter"></div>
+        </div>
+        <div class="knowledge-map-block">
+          <div class="meta-label">Knowledge map</div>
+          <ul class="knowledge-list" id="knowledgeList"></ul>
+        </div>
+      </div>
+
+      <!-- BOTTOM: question + answer + mic -->
+      <div class="question-panel" id="questionPanel" style="display:none">
+        <div class="question-text" id="questionText"></div>
+        <div class="answer-row">
+          <textarea id="answerInput" placeholder="Type your answer…"></textarea>
+          <button class="mic-btn" id="micBtn" title="Speak your answer">🎤</button>
+        </div>
+        <div class="feedback-banner" id="feedbackBanner"></div>
+        <div class="controls-row">
+          <span class="timer" id="conceptLabel"></span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost" id="explainBackBtn" style="font-size:12px;padding:9px 14px">🗣️ Explain it back</button>
+            <button class="btn btn-primary" id="submitAnswerBtn">Submit answer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPLIT STUDY ============ -->
+  <section id="screen-split-study" class="screen">
+    <div class="split-shell">
+      <header class="split-header">
+        <button class="btn btn-ghost" id="closeSplitStudyBtn">← Back to lesson</button>
+        <div><span class="section-kicker">Study workspace</span><strong id="splitTopicLabel">Current lesson</strong></div>
+        <button class="btn btn-primary" id="splitGuidedBtn">Start guided session</button>
+      </header>
+      <div class="split-grid">
+        <aside class="source-panel">
+          <div class="split-panel-heading"><strong>Source material</strong><span id="sourcePageCount">1 page</span></div>
+          <div id="sourceThumbnails" class="source-thumbnails"></div>
+          <div id="sourcePreview" class="source-preview"></div>
+        </aside>
+        <section class="notes-panel">
+          <div class="notes-tabs"><button class="notes-tab active" id="notesTab">Notes</button><button class="notes-tab" id="transcriptTab">Transcript</button><button class="notes-tab" id="viewPdfTab">View PDF</button><button class="notes-tab selected-tab" id="splitModeTab">Split screen</button></div>
+          <div class="format-toolbar" aria-label="Formatting toolbar"><select id="noteFontSelect"><option>DM Sans</option><option>Georgia</option><option>Arial</option></select><select id="noteSizeSelect"><option value="3">14</option><option value="4">16</option><option value="5">18</option></select><button data-command="bold"><strong>B</strong></button><button data-command="italic"><em>I</em></button><button data-command="underline"><u>U</u></button><button data-command="strikeThrough"><s>S</s></button></div>
+          <article id="notesEditor" class="notes-editor" contenteditable="true" spellcheck="true"></article>
+          <div class="notes-footer"><span>Notes save locally in this study set.</span><button class="btn btn-primary" id="saveSplitNotesBtn">Save notes</button></div>
+        </section>
+        <aside class="split-chat-panel">
+          <div class="chat-heading"><strong>How can I help?</strong><span>Grounded in this lesson</span></div>
+          <div id="splitChatMessages" class="split-chat-messages"><div class="chat-welcome"><span class="chat-cat" aria-label="Skippy the cat"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></span><h3>How can I help?</h3><p>Ask about the current concept or use a quick action.</p></div></div>
+          <div class="chat-suggestions"><button data-prompt="Explain the difficult parts"><span>◌</span>Explain the difficult parts</button><button data-prompt="Generate flashcards"><span>▣</span>Generate flashcards</button><button data-prompt="Fill in the gaps"><span>✦</span>Fill in the gaps</button><button data-prompt="Add a summary at the top"><span>✎</span>Add a summary at the top</button></div>
+          <div class="chat-compose"><textarea id="splitChatInput" placeholder="Ask your AI tutor anything..."></textarea><button id="splitChatSend" title="Send message">↑</button></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FLASHCARDS ============ -->
+  <section id="screen-flashcards" class="screen">
+    <div class="flash-shell">
+      <header class="flash-header">
+        <button class="btn btn-ghost" id="closeFlashcardsBtn">← Back to lesson</button>
+        <div class="flash-crumb"><span class="section-kicker">Flashcards</span><strong id="flashSetLabel">Current lesson</strong></div>
+        <div class="flash-header-actions">
+          <button class="icon-btn" id="flashShuffleBtn" title="Shuffle deck" aria-label="Shuffle deck">⤨</button>
+          <button class="icon-btn" id="flashMenuBtn" title="More options" aria-label="More options">⋯</button>
+        </div>
+      </header>
+
+      <div class="flash-grid">
+        <section class="flash-main">
+          <div class="flash-progress-row">
+            <button class="confidence-pill" id="flashConfidenceBtn"><span class="confidence-flame">🔥</span> Confidence <span class="chev">›</span></button>
+            <div class="flash-dots" id="flashDots"></div>
+            <div class="flash-pager">
+              <button class="icon-btn small" id="flashPagePrevBtn" aria-label="Previous card">‹</button>
+              <span id="flashPageLabel">1 / 1</span>
+              <button class="icon-btn small" id="flashPageNextBtn" aria-label="Next card">›</button>
+            </div>
+          </div>
+
+          <div class="flash-card-top">
+            <span class="flash-card-kicker">Term <span id="flashCardNumber">1</span></span>
+            <div class="flash-rate-row">
+              <button class="rate-btn" id="flashUpBtn" title="I know this" aria-label="I know this">👍</button>
+              <button class="rate-btn" id="flashDownBtn" title="Still learning" aria-label="Still learning">👎</button>
+            </div>
+          </div>
+
+          <div class="flash-card-stage" id="flashCardStage">
+            <div class="flash-card" id="flashCard">
+              <div class="flash-face flash-face-front">
+                <p id="flashFrontText">Start a lesson to generate flashcards.</p>
+              </div>
+              <div class="flash-face flash-face-back">
+                <p id="flashBackText"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flash-controls">
+            <button class="btn btn-ghost" id="flashPrevBtn">← Previous</button>
+            <button class="btn flash-flip-btn" id="flashFlipBtn"><span class="key-hint">SPACE</span> Flip</button>
+            <button class="btn btn-ghost" id="flashNextBtn">Next →</button>
+          </div>
+        </section>
+
+        <aside class="split-chat-panel flash-chat-panel">
+          <div class="chat-heading"><span class="chat-cat" aria-label="Skippy the cat"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></span><h3>How can I help?</h3></div>
+          <div id="flashChatMessages" class="split-chat-messages"><div class="chat-welcome"><span class="chat-cat" aria-label="Skippy the cat"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></span><p>Ask about this card or use a quick action.</p></div></div>
+          <div class="chat-suggestions">
+            <button data-flash-prompt="explain"><span>◌</span>Explain this card</button>
+            <button data-flash-prompt="quiz"><span>▣</span>Quiz me on this</button>
+            <button data-flash-prompt="example"><span>✎</span>Give another example</button>
+          </div>
+          <div class="chat-compose"><textarea id="flashChatInput" placeholder="Ask your AI tutor anything..."></textarea><button id="flashChatSend" title="Send message">↑</button></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GUIDED STUDY PANEL ============ -->
+  <div id="guidedSessionPanel" class="guided-overlay" style="display:none">
+    <section class="guided-panel" role="dialog" aria-modal="true" aria-labelledby="guidedPanelTitle">
+      <button class="guided-close" id="guidedPanelCloseBtn" aria-label="Close guided session panel">×</button>
+      <span class="section-kicker">A focused path through this idea</span>
+      <h2 id="guidedPanelTitle">Ready to learn <span id="guidedConceptLabel">this concept</span>?</h2>
+      <p class="guided-lede">Choose how you want the teacher to guide you. Your notes stay open, while the lesson moves in small, useful steps.</p>
+      <div class="guided-route">
+        <div class="guided-route-line"></div>
+        <div class="guided-step active"><span>01</span><strong>Orient</strong><small>name the big idea</small></div>
+        <div class="guided-step"><span>02</span><strong>Try</strong><small>answer one prompt</small></div>
+        <div class="guided-step"><span>03</span><strong>Reflect</strong><small>lock in the insight</small></div>
+      </div>
+      <div class="guided-focus-label">Your focus: <strong id="guidedFocusLabel">Understand the idea</strong></div>
+      <div class="guided-focus-grid">
+        <button class="guided-focus active" data-guided-focus="understand"><span>✦</span><strong>Understand the idea</strong><small>Start with a clear explanation and example.</small></button>
+        <button class="guided-focus" data-guided-focus="practice"><span>↗</span><strong>Practice first</strong><small>Get to a quick question sooner.</small></button>
+        <button class="guided-focus" data-guided-focus="review"><span>◌</span><strong>Review weak spots</strong><small>Revisit the tricky parts from this lesson.</small></button>
+      </div>
+      <div class="guided-actions"><button class="btn btn-ghost" id="guidedPanelCloseBtnSecondary">Keep studying notes</button><button class="btn btn-primary" id="guidedStartBtn">Begin guidance →</button></div>
+    </section>
+  </div>
+
+  <!-- ============ EXPLAIN-IT-BACK OVERLAY ============ -->
+  <div id="explainBackOverlay" class="eb-overlay" style="display:none">
+    <div class="eb-modal">
+      <div class="eb-header">
+        <span class="eb-title">🗣️ Explain it back</span>
+        <button class="eb-close" id="ebCloseBtn">✕</button>
+      </div>
+      <div id="ebAttemptBadges" class="eb-attempts"></div>
+      <div class="loading-line" id="ebLoading"><div class="spinner"></div> Thinking of a question…</div>
+      <div id="ebBody" style="display:none">
+        <p class="eb-prompt" id="ebPrompt"></p>
+        <textarea id="ebInput" placeholder="Explain it in your own words…"></textarea>
+        <div class="eb-feedback" id="ebFeedback" style="display:none"></div>
+        <div id="ebUnderstoodMissing" style="display:none"></div>
+        <div class="eb-actions">
+          <button class="btn btn-ghost" id="ebSkipBtn">Not now</button>
+          <button class="btn btn-primary" id="ebSubmitBtn">Submit explanation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="screen">
+    <div class="paper">
+      <h1>Final quiz</h1>
+      <p class="lede">A few mixed questions across everything we covered — then your report.</p>
+      <div class="loading-line" id="quizLoading"><div class="spinner"></div> Writing your quiz…</div>
+      <div id="quizContent" style="display:none; margin-left:28px;"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="submitQuizBtn" style="display:none">Submit quiz →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOMEWORK ============ -->
+  <section id="screen-homework" class="screen">
+    <div class="paper">
+      <h1>Personalized homework</h1>
+      <p class="lede">Targeted at what you found tricky this session — a ladder from easy to challenge.</p>
+      <div class="loading-line" id="homeworkLoading"><div class="spinner"></div> Writing your homework…</div>
+      <div id="homeworkContent" style="display:none; margin-left:28px;"></div>
+      <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="submitHomeworkBtn" style="display:none">Submit homework →</button>
+        <button class="btn btn-ghost" id="retryHomeworkBtn" style="display:none">🔁 New set</button>
+        <button class="btn btn-ghost" id="backToReportBtn">← Back to report</button>
+      </div>
+      <div id="homeworkResults" style="margin:16px 28px 0"></div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRESS / ANALYTICS ============ -->
+  <section id="screen-progress" class="screen">
+    <div class="paper">
+      <h1>My learning analytics</h1>
+      <p class="lede">Deterministically calculated from your session history — nothing here is estimated by the AI.</p>
+      <div class="loading-line" id="progressLoading"><div class="spinner"></div> Crunching the numbers…</div>
+      <div id="progressContent" style="display:none; margin-left:28px;"></div>
+    </div>
+  </section>
+
+  <section id="screen-tutor" class="screen">
+    <div class="tutor-shell">
+      <header class="tutor-header">
+        <div class="tutor-breadcrumb"><span>Mentora</span><b>›</b><strong>Tutor</strong></div>
+        <div class="tutor-header-actions"><button class="tutor-icon-btn" id="tutorShareBtn" title="Share tutor" aria-label="Share tutor">↗</button><button class="tutor-icon-btn" id="tutorInfoBtn" title="Tutor information" aria-label="Tutor information">ⓘ</button><button class="tutor-time-pill" id="tutorTimeBtn">◷ <span>25m</span></button><button class="tutor-profile-btn" aria-label="Student profile">M</button></div>
+      </header>
+
+      <div class="tutor-identity-row"><div class="tutor-skippy-mark" aria-label="Skippy the cat"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></div><div><h1>Skippy</h1><span class="tutor-badge">✦ AI Tutor</span><p>1:1 adaptive tutoring with your study materials</p></div><button class="tutor-new-session-btn" id="tutorNewSessionBtn">＋ New session</button></div>
+
+      <div class="tutor-upgrade-note"><span>Tutor sessions use your selected topic, level, and learning goal.</span><button id="tutorPlanBtn">Open study plan</button></div>
+
+      <div class="tutor-toolbar"><button class="tutor-set-picker" id="tutorSetPicker">▤ <span id="tutorSetLabel">All study sets</span>⌄</button><div class="tutor-view-toggle"><button class="active" id="tutorGridViewBtn" title="Grid view" aria-label="Grid view">⊞</button><button id="tutorListViewBtn" title="List view" aria-label="List view">▤</button></div><label class="tutor-search"><span>⌕</span><input id="tutorSearchInput" type="search" placeholder="Search tutor sessions..."></label></div>
+
+      <div class="tutor-body-grid"><main class="tutor-session-panel"><div class="tutor-panel-heading"><div><span class="section-kicker">Your tutor space</span><h2>Study with Skippy</h2></div><span id="tutorSessionCount">0 sessions</span></div><div id="tutorSessionGrid" class="tutor-session-grid"></div><div id="tutorEmptyState" class="tutor-empty-state"><div class="tutor-empty-illustration">⌁</div><h2>No sessions yet</h2><p>Start a 1:1 tutoring session with Skippy using a topic or your course materials.</p><button class="btn btn-primary" id="tutorEmptyStartBtn">＋ Start a session</button></div></main>
+        <aside class="tutor-chat-panel"><div class="tutor-chat-heading"><div class="tutor-chat-avatar"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></div><div><strong>How can I help?</strong><small>Ask Skippy about your studies</small></div><button id="tutorClearChatBtn" title="New chat" aria-label="New chat">＋</button></div><div id="tutorChatMessages" class="tutor-chat-messages"><div class="tutor-chat-welcome"><h3>Ready when you are.</h3><p>Ask about your saved sessions, what to study next, or start a new topic.</p></div></div><div class="tutor-chat-suggestions"><button data-tutor-prompt="What should I study next?">⌁ What should I study next?</button><button data-tutor-prompt="Start a new tutoring session">＋ Start a new session</button><button data-tutor-prompt="Help me choose a topic">▤ Help me choose a topic</button></div><div class="tutor-chat-compose"><textarea id="tutorChatInput" placeholder="Ask Skippy anything..."></textarea><button id="tutorChatSend" title="Send message" aria-label="Send message">↑</button></div></aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-study-plan" class="screen">
+    <div class="study-plan-shell">
+      <header class="study-plan-header">
+        <div class="study-plan-breadcrumb"><span>Study sets</span><b>›</b><strong id="studyPlanTopicLabel">Study plan</strong></div>
+        <div class="study-plan-header-actions"><button class="study-plan-icon-btn" id="studyPlanRefreshBtn" title="Refresh plan" aria-label="Refresh plan">↻</button><button class="study-plan-time-pill" id="studyPlanTimeBtn">◷ <span>25m</span></button><button class="study-plan-icon-btn" id="studyPlanSettingsBtn" title="Plan settings" aria-label="Plan settings">⚙</button></div>
+      </header>
+
+      <div class="study-plan-layout">
+        <main class="study-plan-main">
+          <div class="study-plan-title-row">
+            <div class="study-plan-set-icon" aria-label="Study set">▤</div>
+            <div class="study-plan-title-copy"><h1 id="studyPlanTitle">Build a study plan</h1><div class="study-plan-statbar"><span>▤ <b id="studyPlanTopicCount">0</b> Topics</span><span>◌ <b id="studyPlanCoveredCount">0</b> Covered</span><span>✧ <b id="studyPlanMasteredCount">0</b> Mastered</span><div class="study-plan-progress"><i id="studyPlanProgressFill"></i></div></div></div>
+          </div>
+
+          <section class="study-plan-builder" id="studyPlanBuilder">
+            <div class="study-plan-builder-heading"><div><span class="study-plan-builder-kicker">Plan builder</span><h2>What do you want to learn?</h2></div><button class="study-plan-builder-close" id="studyPlanBuilderClose" title="Close plan builder" aria-label="Close plan builder">×</button></div>
+            <div class="study-plan-builder-fields">
+              <label class="study-plan-input-field">Topic<input id="studyPlanTopicInput" type="text" placeholder="e.g. Quadratic equations"></label>
+              <label class="study-plan-input-field">Category<select id="studyPlanCategoryInput"><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Computer science</option><option>History</option><option>Languages</option><option>Business</option><option>Arts &amp; design</option><option>Custom</option></select></label>
+              <div class="study-plan-difficulty-field"><span>Difficulty</span><div class="study-plan-difficulty-options"><button type="button" class="plan-difficulty active" data-plan-difficulty="Beginner">Beginner</button><button type="button" class="plan-difficulty" data-plan-difficulty="Intermediate">Intermediate</button><button type="button" class="plan-difficulty" data-plan-difficulty="Advanced">Advanced</button></div></div>
+              <button class="btn btn-primary study-plan-add-btn" id="studyPlanAddTopicBtn">Add topic</button>
+            </div>
+            <div id="studyPlanDraftList" class="study-plan-draft-list"></div>
+            <div class="study-plan-builder-footer"><span id="studyPlanBuilderHint">Add topics with their own difficulty to build a realistic plan.</span><button class="btn btn-primary" id="studyPlanGenerateBtn">Generate study plan →</button></div>
+          </section>
+
+          <section class="study-plan-toolbar">
+            <strong>Customize your Study Plan</strong>
+            <div class="study-plan-control"><span>Mode</span><button class="plan-select active" data-plan-mode="comprehensive">⌘ Comprehensive</button><button class="plan-select" data-plan-mode="focused">◌ Focused</button></div>
+            <div class="study-plan-control"><span>Sort by</span><button class="plan-sort active" data-plan-sort="recommended">Recommended ✦</button><button class="plan-sort" data-plan-sort="shortest">Shortest first</button></div>
+            <button class="study-plan-filter" id="studyPlanFilterBtn" title="Show incomplete topics" aria-label="Show incomplete topics">▽</button>
+          </section>
+
+          <div class="study-plan-start-line"><span class="study-plan-launch">➤</span><strong>Start learning here</strong><small id="studyPlanNextHint">Your next focused step</small></div>
+          <div id="studyPlanTimeline" class="study-plan-timeline"></div>
+        </main>
+
+        <aside class="study-plan-chat">
+          <div class="study-plan-chat-header"><div class="study-plan-chat-avatar" aria-label="Mentora tutor"><span class="cat-mascot" aria-hidden="true"><span class="cat-ear cat-ear-left"></span><span class="cat-ear cat-ear-right"></span><span class="cat-face"><span class="cat-eye cat-eye-left"></span><span class="cat-eye cat-eye-right"></span><span class="cat-nose"></span><span class="cat-mouth"></span><span class="cat-whisker cat-whisker-left"></span><span class="cat-whisker cat-whisker-right"></span></span></span></div><div><strong>How can I help?</strong><small>Ask about this study plan</small></div><button id="studyPlanNewChatBtn" title="New chat" aria-label="New chat">＋</button></div>
+          <div id="studyPlanChatMessages" class="study-plan-chat-messages"><div class="study-plan-welcome"><h3>Let’s make this doable.</h3><p>I can turn your next topic into a focused session, explain the plan, or help you choose where to begin.</p></div></div>
+          <div class="study-plan-suggestions"><button data-plan-prompt="What should I study first?">⌁ What should I study first?</button><button data-plan-prompt="Create a study plan for me">▤ Create a study plan for me</button><button data-plan-prompt="How long will this take?">◷ How long will this take?</button></div>
+          <div class="study-plan-composer"><textarea id="studyPlanChatInput" placeholder="Ask your AI tutor anything..."></textarea><button id="studyPlanChatSend" title="Send message" aria-label="Send message">↑</button></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-sets" class="screen">
+    <div class="paper">
+      <div class="workspace-heading"><div><span class="section-kicker">Library</span><h1>Your study sets</h1><p class="lede">Everything you have started learning, ready to pick up again.</p></div><button class="btn btn-primary" id="setsCreateBtn">＋ Create study set</button></div>
+      <div id="setsContent" class="study-set-library"></div>
+    </div>
+  </section>
+
+  <section id="screen-calendar" class="screen">
+    <div class="paper">
+      <div class="workspace-heading"><div><span class="section-kicker">Study rhythm</span><h1>Review calendar</h1><p class="lede">A simple view of what to revisit next.</p></div><button class="btn btn-ghost" id="calendarTodayBtn">Today</button></div>
+      <div class="calendar-layout"><div class="calendar-card"><div class="calendar-month"><button id="calendarPrevBtn" class="icon-btn">‹</button><strong id="calendarMonthLabel"></strong><button id="calendarNextBtn" class="icon-btn">›</button></div><div class="calendar-week"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div><div id="calendarGrid" class="calendar-grid"></div></div><div id="calendarAgenda" class="agenda-card"></div></div>
+    </div>
+  </section>
+
+  <section id="screen-mini-apps" class="screen">
+    <div class="paper">
+      <span class="section-kicker">Practice corner</span><h1>Mini apps</h1><p class="lede">Short, focused activities built around your saved study sets.</p>
+      <div class="mini-app-grid"><button class="mini-app-card" id="miniFlashcardsBtn"><span>▥</span><strong>Flashcards</strong><small>Flip through auto-generated cards from your last lesson.</small></button><button class="mini-app-card" id="miniRecallBtn"><span>◈</span><strong>Quick recall</strong><small>Pick a study set and test yourself in a few minutes.</small></button><button class="mini-app-card" id="miniTutorBtn"><span>✦</span><strong>Tutor prompt</strong><small>Jump into a grounded adaptive lesson from any topic.</small></button><button class="mini-app-card" id="miniNotesBtn"><span>▤</span><strong>Study notes</strong><small>Open the notes from your latest completed session.</small></button></div>
+      <div id="miniAppPanel" class="mini-app-panel" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- ============ REPORT ============ -->
+  <section id="screen-report" class="screen">
+    <div class="paper">
+      <h1>Your learning summary</h1>
+      <p class="lede">Here's how this session went — and where to focus next.</p>
+
+      <div class="loading-line" id="reportLoading"><div class="spinner"></div> Grading the session…</div>
+
+      <div id="reportContent" style="display:none">
+        <div style="text-align:center;">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 120 120">
+              <circle class="score-ring-track" cx="60" cy="60" r="51"/>
+              <circle class="score-ring-fill" id="scoreRingFill" cx="60" cy="60" r="51" stroke-dasharray="320.4" stroke-dashoffset="320.4"/>
+            </svg>
+            <div class="grade-badge" id="scoreBadge">--</div>
+          </div>
+          <p style="margin:0 0 4px" id="reportSummary"></p>
+          <p class="field-note" id="reportCounts"></p>
+        </div>
+
+        <div class="report-grid">
+          <div class="report-card">
+            <h3>🟢 Mastered</h3>
+            <ul id="masteredList"></ul>
+          </div>
+          <div class="report-card">
+            <h3>🟡 Still learning</h3>
+            <ul id="learningList"></ul>
+          </div>
+          <div class="report-card">
+            <h3>🔴 Weak</h3>
+            <ul id="weakList"></ul>
+          </div>
+          <div class="report-card">
+            <h3>Misconceptions caught</h3>
+            <ul id="misconList"></ul>
+          </div>
+          <div class="report-card">
+            <h3>Recommended revision</h3>
+            <ul id="revisionList"></ul>
+          </div>
+          <div class="report-card">
+            <h3>Next session difficulty</h3>
+            <p id="suggestedDifficulty" style="margin:0;font-weight:600"></p>
+          </div>
+          <div class="report-card" style="grid-column:1/-1">
+            <h3>Suggested next topic</h3>
+            <p id="nextTopic" style="margin:0 0 4px;font-weight:600"></p>
+            <p id="nextTopicNote" class="field-note" style="color:var(--coral)"></p>
+          </div>
+        </div>
+
+        <div id="understandingSection" style="display:none;margin-top:22px">
+          <p class="dash-section-title">Understanding — Explain-it-back</p>
+          <div id="understandingList"></div>
+        </div>
+
+        <div id="reviewScheduleSection" style="display:none;margin-top:22px">
+          <p class="dash-section-title">🧠 Spaced review schedule</p>
+          <div id="reviewScheduleList"></div>
+        </div>
+
+        <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-ghost" id="viewNotesBtn">📝 Study notes</button>
+          <button class="btn btn-ghost" id="viewPathBtn">🧭 What's next?</button>
+          <button class="btn btn-ghost" id="viewHomeworkBtn">📚 Homework</button>
+          <button class="btn btn-primary" id="newLessonBtn">Start another lesson</button>
+        </div>
+
+        <div id="notesPanel" class="report-card" style="display:none;margin:18px 28px 0"></div>
+        <div id="pathPanel" class="report-card" style="display:none;margin:18px 28px 0"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">Mentora preview — teaching content is AI-generated and may contain errors. Verify before an exam.</div>
+</div>
+
+<script src="app.js?v=20260904-4"></script>
+</body>
+</html>

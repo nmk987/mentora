@@ -1,0 +1,4 @@
+backend/.env
+backend/ai_teacher.db
+__pycache__/
+*.py[cod]
